@@ -5,7 +5,7 @@ const fastify = Fastify({
 });
 
 fastify.get("/", async (request, reply) => {
-  return { hello: "world!11" };
+  return { hello: "ts world" };
 });
 
 const start = async () => {
