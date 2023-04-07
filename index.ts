@@ -1,20 +1,33 @@
 import Fastify from "fastify";
+import swagger from "@fastify/swagger";
+import swaggerui from "@fastify/swagger-ui";
 
 const fastify = Fastify({
   logger: true,
 });
 
-fastify.get("/", async (request, reply) => {
-  return { hello: "ts world" };
+await fastify.register(swagger, {});
+
+fastify.register(swaggerui, {
+  routePrefix: "/api",
 });
 
-const start = async () => {
-  try {
-    await fastify.listen({ port: 3000 });
-  } catch (err) {
-    fastify.log.error(err);
-    process.exit(1);
+fastify.get(
+  "/",
+  {
+    schema: {
+      response: {
+        200: {
+          description: "response and schema description",
+          type: "object",
+          properties: { hello: { type: "string" } },
+        },
+      },
+    },
+  },
+  async (request, reply) => {
+    return { hello: "ts world" };
   }
-};
+);
 
-start();
+fastify.listen({ port: 3000 });
