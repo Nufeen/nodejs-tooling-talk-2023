@@ -1,12 +1,15 @@
 import Fastify from "fastify";
 import swagger from "@fastify/swagger";
 import swaggerui from "@fastify/swagger-ui";
+import metricsPlugin from "fastify-metrics";
 
 const fastify = Fastify({
   logger: true,
 });
 
 await fastify.register(swagger, {});
+
+await fastify.register(metricsPlugin, { endpoint: "/metrics" });
 
 fastify.register(swaggerui, {
   routePrefix: "/api",
